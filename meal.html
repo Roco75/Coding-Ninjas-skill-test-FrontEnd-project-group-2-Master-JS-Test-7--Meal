@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Details</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="index.html">Meal App</a>
+  </nav>
+  <div class="container mt-3" id="mealDetails"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const mealId = urlParams.get("mealId");
+
+    async function fetchMealDetails(id) {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+      const data = await response.json();
+      displayMealDetails(data.meals[0]);
+    }
+
+    function displayMealDetails(meal) {
+      const mealDetails = document.getElementById("mealDetails");
+      mealDetails.innerHTML = `
+        <h1>${meal.strMeal}</h1>
+        <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="img-fluid">
+        <h3>Instructions</h3>
+        <p>${meal.strInstructions}</p>
+      `;
+    }
+
+    fetchMealDetails(mealId);
+  </script>
+</body>
+</html>
